@@ -2,26 +2,22 @@ package com.pluralsight.finance;
 import java.util.Scanner;
 public class FutureValueCalculator {
     public static void main (String [] args){
-        int selection =0;
+// get user input
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter initial deposit");
+        double initialDeposit = scanner.nextDouble();
+        System.out.println("Enter interest rate as in percent");
+        double interestRate = scanner.nextDouble();
+        System.out.println("Enter the number of years");
+        int numOfYears = scanner.nextInt();
 
-        System.out.println("""
-                Which calculator would you like to use?
-                Select by number:
-                1.Mortgage Calculator
-                2.Future Value Calculator
-                
-                """
-        );
-
-        selection = scanner.nextInt();
-
-        if (selection ==1){
-            MortgageCalculator.main(args);
-        }
-        if (selection ==2){
-            FutureValueCalculator.main(args);
-        }
+        //interest rate to decimal
+       double interestDecimal = interestRate/100;
+        double totalAmount = (initialDeposit *Math.pow(1+(interestDecimal/365),(numOfYears*365)));
+        double  interest = totalAmount-initialDeposit;
+        //Print calculations
+        System.out.printf("The total ending amount is: $%.2f%n",totalAmount);
+        System.out.printf("The total interest incurred is: $%.2f%n", (interest));
 
     }
 }
