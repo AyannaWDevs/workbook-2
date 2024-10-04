@@ -19,7 +19,7 @@ package com.pluralsight.finance;
             double monthlyPayment = principalAmount *(monthlyInterest*amount/(amount-1));
             //print result
             double totalInterest = (interestPercent/100)*principalAmount*loanLengthInYears;
-            System.out.println("You will incur a total interest of $" +totalInterest);
+            System.out.println("You will incur a total of $" +totalInterest);
             System.out.printf("Your monthly payment is: $%.2f%n",monthlyPayment);
 
 
