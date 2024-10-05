@@ -1,6 +1,6 @@
 package com.pluralsight;
 import java.util.Scanner;
-public class fullNameConcatenation {
+public class fullNameConcatenator {
     static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -10,11 +10,11 @@ public class fullNameConcatenation {
         String middleName = getUserInput("Please enter your middle name: ");
         String lastName = getUserInput("Please enter your last name: ");
         String suffix = getUserInput("What is your name suffix? ");
-        String fullName = suffix + " " + firstName +
+        String fullName =  firstName +
                 (middleName.isBlank() ? "" : " " + middleName) +
-                " " + lastName;
+                " " + lastName +(suffix.isBlank()?"": (", " + suffix )) ;
         {
-            System.out.print("Your full name is: " + fullName);
+            System.out.print("Your full name is: " + fullName.trim());
 
         }
         }
