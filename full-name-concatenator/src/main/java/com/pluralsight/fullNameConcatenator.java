@@ -10,11 +10,11 @@ public class fullNameConcatenator {
         String middleName = getUserInput("Please enter your middle name: ");
         String lastName = getUserInput("Please enter your last name: ");
         String suffix = getUserInput("What is your name suffix? ");
-        String fullName =  firstName +
-                (middleName.isBlank() ? "" : " " + middleName) +
-                " " + lastName +(suffix.isBlank()?"": (", " + suffix )) ;
+        String fullName =  firstName.trim() +
+                (middleName.isBlank() ? "" : " " + middleName.trim()) +
+                " " + lastName.trim() +(suffix.isBlank()?"": (", " + suffix.trim() )) ;
         {
-            System.out.print("Your full name is: " + fullName.trim());
+            System.out.print("Your full name is: " + fullName);
 
         }
         }
