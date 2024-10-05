@@ -12,14 +12,14 @@ public static void main(String[]args) {
     //last name condition to print
     String lastName = nameParts[nameParts.length - 1];
     //first name print
-    System.out.println("First Name: "+ nameParts[0]);
+    System.out.println("First Name: "+ nameParts[0].trim());
     //middle name print
     if (nameParts.length > 2) {
         String middleName = nameParts[1];
-        System.out.println("Middle Name: " + middleName);
+        System.out.println("Middle Name: " + middleName.trim());
     }
     //last name print
-    System.out.println("Last Name: " + lastName);
+    System.out.println("Last Name: " + lastName.trim());
 
 
 }
