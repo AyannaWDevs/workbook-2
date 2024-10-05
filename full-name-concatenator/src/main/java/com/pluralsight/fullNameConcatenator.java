@@ -24,3 +24,4 @@ public class fullNameConcatenator {
     }
 }
 
+ System.out.println("Middle Name: "+ nameParts[1]);
