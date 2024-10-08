@@ -1,9 +1,11 @@
 package com.pluralsight.library;
 
+import java.util.Scanner;
+
 public class NeighborhoodLibraryApp {
     public static void main(String[] args) {
         Book b;
-        b = new Book("nameoftheBook", "22",0);
+        b = new Book("nameoftheBook", "22", 0);
         System.out.println(b);
         Book[] books = new Book[20];
 
@@ -28,9 +30,58 @@ public class NeighborhoodLibraryApp {
         books[18] = new Book("Mindset: The New Psychology of Success", "0345472322", 19);
         books[19] = new Book("The 5 Love Languages", "080241270X", 20);
 
-        for (Book book : books) {
-                book.printBookDetails();
-            System.out.println();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("""
+                    Hello, Welcome to the Neighborhood Library!
+                    Enter:
+                    'C' to check out a book
+                    'V' to view books
+                    'S' to show checked out books
+                    'Q' to quit
+                    
+                    """);
+            System.out.println("Enter 'C' to check out a book, 'V' to view books,'S' to show checked out books, or 'Q' to quit:");
+            String action = scanner.nextLine().trim().toUpperCase();
+
+            if (action.equals("C")) {
+                while (true) {
+                    System.out.println("Enter the book ID to check out, or press 'Q' to cancel:");
+                    String input = scanner.nextLine().trim().toUpperCase();
+                    if (input.equals("Q")) {
+                        System.out.println("Checkout canceled. Returning to the home screen.");
+                        break;
+                    }
+                    String personName = scanner.nextLine().trim();
+                    int bookId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (bookId >= 1 && bookId <= books.length) {
+                        books[bookId - 1].checkOutBook(personName);
+                    } else {
+                        System.out.println("Invalid book ID. Please try again.");
+                    }
+                }
+            }
+            else if (action.equals("S")) {
+                    System.out.println("Checked out books:");
+                    for (Book book : books) {
+                        if (book.isCheckedOut()) { // Check if the book is checked out
+                            book.printBookDetails();
+                        }
+
+                    }
+                } else if (action.equals("V")) {
+                    System.out.println("Available books:");
+                    for (Book book : books) {
+                        book.printBookDetails();
+                    }
+                } else if (action.equals("Q")) {
+                    System.out.println("Exiting the library system. Goodbye!");
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid input. Please enter 'C', 'V', or 'Q'.");
+                }
             }
         }
     }
