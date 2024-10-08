@@ -14,6 +14,7 @@ public class Book {
         this.isCheckedOut = false;
         this.checkedOutTo = null;
     }
+
     public boolean isCheckedOut() {
         return isCheckedOut; // Returns the current status of the book
     }
@@ -44,6 +45,16 @@ public class Book {
             this.checkedOutTo = null;
         } else {
             System.out.println(title + "is not checked out currently");
+        }
+    }
+
+    public void checkInBook() {
+        if (isCheckedOut) {
+            System.out.println(title + " is now checked in.");
+            this.isCheckedOut = false;
+            this.checkedOutTo = null;
+        } else {
+            System.out.println(title + " is not checked out currently.");
         }
     }
 }

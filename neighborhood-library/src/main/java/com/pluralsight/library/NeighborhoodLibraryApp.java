@@ -3,10 +3,8 @@ package com.pluralsight.library;
 import java.util.Scanner;
 
 public class NeighborhoodLibraryApp {
+
     public static void main(String[] args) {
-        Book b;
-        b = new Book("nameoftheBook", "22", 0);
-        System.out.println(b);
         Book[] books = new Book[20];
 
         books[0] = new Book("Atomic Habits", "0735211299", 1);
@@ -31,57 +29,111 @@ public class NeighborhoodLibraryApp {
         books[19] = new Book("The 5 Love Languages", "080241270X", 20);
 
         Scanner scanner = new Scanner(System.in);
+
         while (true) {
             System.out.println("""
                     Hello, Welcome to the Neighborhood Library!
                     Enter:
                     'C' to check out a book
-                    'V' to view books
+                    'V' to view available books
+                    'I' to check in a book
                     'S' to show checked out books
-                    'Q' to quit
-                    
+                    'X' to exit
                     """);
-            System.out.println("Enter 'C' to check out a book, 'V' to view books,'S' to show checked out books, or 'Q' to quit:");
+
             String action = scanner.nextLine().trim().toUpperCase();
 
-            if (action.equals("C")) {
-                while (true) {
-                    System.out.println("Enter the book ID to check out, or press 'Q' to cancel:");
-                    String input = scanner.nextLine().trim().toUpperCase();
-                    if (input.equals("Q")) {
-                        System.out.println("Checkout canceled. Returning to the home screen.");
-                        break;
-                    }
-                    String personName = scanner.nextLine().trim();
-                    int bookId = scanner.nextInt();
-                    scanner.nextLine();
-
-                    if (bookId >= 1 && bookId <= books.length) {
-                        books[bookId - 1].checkOutBook(personName);
-                    } else {
-                        System.out.println("Invalid book ID. Please try again.");
-                    }
-                }
-            }
-            else if (action.equals("S")) {
-                    System.out.println("Checked out books:");
-                    for (Book book : books) {
-                        if (book.isCheckedOut()) { // Check if the book is checked out
-                            book.printBookDetails();
-                        }
-
-                    }
-                } else if (action.equals("V")) {
-                    System.out.println("Available books:");
-                    for (Book book : books) {
-                        book.printBookDetails();
-                    }
-                } else if (action.equals("Q")) {
+            switch (action) {
+                case "V" -> showAvailableBooks(books, scanner);
+                case "C" -> checkOutBook(books, scanner);
+                case "I" -> checkInBook(books, scanner);
+                case "S" -> showCheckedOutBooks(books);
+                case "X" -> {
                     System.out.println("Exiting the library system. Goodbye!");
-                    break; // Exit the loop
-                } else {
-                    System.out.println("Invalid input. Please enter 'C', 'V', or 'Q'.");
+                    return;
+                }
+                default -> System.out.println("Invalid input. Please enter 'C', 'V', 'I', 'S', or 'X'.");
+            }
+        }
+    }
+
+    public static void showAvailableBooks(Book[] books, Scanner scanner) {
+        System.out.println("Available books:");
+        boolean availableBooksFound = false;
+        for (Book book : books) {
+            if (!book.isCheckedOut()) {
+                book.printBookDetails();
+                availableBooksFound = true;
+            }
+        }
+
+        if (!availableBooksFound) {
+            System.out.println("No available books at the moment.");
+        } else {
+            System.out.println("Enter the book ID to check out or 'B' to return to the home screen:");
+            String input = scanner.nextLine().trim().toUpperCase();
+
+            if (input.equals("B")) {
+                System.out.println("Returning to the home screen.");
+            } else {
+                try {
+                    int bookId = Integer.parseInt(input);
+                    if (bookId >= 1 && bookId <= books.length && !books[bookId - 1].isCheckedOut()) {
+                        checkOutBookById(books, bookId - 1, scanner);
+                    } else {
+                        System.out.println("Invalid book ID or the book is already checked out. Please try again.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid book ID or 'B' to return.");
                 }
             }
         }
     }
+
+    public static void checkOutBookById(Book[] books, int bookIndex, Scanner scanner) {
+        System.out.print("Enter your name: ");
+        String personName = scanner.nextLine().trim();
+        books[bookIndex].checkOutBook(personName);
+    }
+
+    public static void checkOutBook(Book[] books, Scanner scanner) {
+        System.out.print("Enter the book ID to check out: ");
+        int bookId = scanner.nextInt();
+        scanner.nextLine();
+
+        if (bookId >= 1 && bookId <= books.length) {
+            System.out.print("Enter your name: ");
+            String personName = scanner.nextLine().trim();
+            books[bookId - 1].checkOutBook(personName);
+        } else {
+            System.out.println("Invalid book ID. Please try again.");
+        }
+    }
+
+    public static void checkInBook(Book[] books, Scanner scanner) {
+        System.out.print("Enter the book ID to check in: ");
+        int bookId = scanner.nextInt();
+        scanner.nextLine();
+
+        if (bookId >= 1 && bookId <= books.length && books[bookId - 1].isCheckedOut()) {
+            books[bookId - 1].checkInBook();
+            System.out.println("Book ID " + bookId + " has been successfully checked in.");
+        } else {
+            System.out.println("Invalid book ID or the book is not checked out. Please try again.");
+        }
+    }
+
+    public static void showCheckedOutBooks(Book[] books) {
+        System.out.println("Checked out books:");
+        boolean checkedOutBooksFound = false;
+        for (Book book : books) {
+            if (book.isCheckedOut()) {
+                book.printBookDetails();
+                checkedOutBooksFound = true;
+            }
+        }
+        if (!checkedOutBooksFound) {
+            System.out.println("No books are currently checked out.");
+        }
+    }
+}
