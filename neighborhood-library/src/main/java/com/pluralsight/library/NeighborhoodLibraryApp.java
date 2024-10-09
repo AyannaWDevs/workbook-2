@@ -1,11 +1,16 @@
 package com.pluralsight.library;
 
-import java.util.Scanner;
+import java.util.Scanner; // Import scanner for input
 
 public class NeighborhoodLibraryApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //Main class declaration
+
+        // we created an array of Book - notes that Book is a class that we created ..  specifically a model
         Book[] books = new Book[20];
+
+        //here we are populating our array
+        // we use the new keyword to create an object from the class (blueprint) we created;
 
         books[0] = new Book("Atomic Habits", "0735211299", 1);
         books[1] = new Book("The 7 Habits of Highly Effective People", "1982137274", 2);
@@ -28,10 +33,12 @@ public class NeighborhoodLibraryApp {
         books[18] = new Book("Mindset: The New Psychology of Success", "0345472322", 19);
         books[19] = new Book("The 5 Love Languages", "080241270X", 20);
 
-        Scanner scanner = new Scanner(System.in);
 
-        while (true) {
-            System.out.println("""
+        Scanner scanner = new Scanner(System.in); //Created a scanner object to accept input
+
+        while (true) { // Not sure what this while loop does
+            //Prints the options of user input
+            System.out.println(""" 
                     Hello, Welcome to the Neighborhood Library!
                     Enter:
                     'C' to check out a book
@@ -41,33 +48,35 @@ public class NeighborhoodLibraryApp {
                     'X' to exit
                     """);
 
-            String action = scanner.nextLine().trim().toUpperCase();
+            String action = scanner.nextLine().trim().toUpperCase(); // accepts input and declares response as 'action',
+                                                                        //also trims the spaces and converts to uppercase
 
-            switch (action) {
-                case "V" -> showAvailableBooks(books, scanner);
-                case "C" -> checkOutBook(books, scanner);
+            switch (action) { // based on the 'action' input, decides which switch case is ran
+                            // -> is shortened switch statement
+                case "V" -> showAvailableBooks(books, scanner); // books collection is passed to the method, scanner?
+                case "C" -> checkOutBook(books, scanner);       // is needed to accept input
                 case "I" -> checkInBook(books, scanner);
                 case "S" -> showCheckedOutBooks(books);
                 case "X" -> {
                     System.out.println("Exiting the library system. Goodbye!");
-                    return;
+                    return; //?
                 }
-                default -> System.out.println("Invalid input. Please enter 'C', 'V', 'I', 'S', or 'X'.");
-            }
+                default -> System.out.println("Invalid input. Please enter 'C', 'V', 'I', 'S', or 'X'."); //if switch case is not met
+            }                                                                                              // default runs
         }
     }
 
     public static void showAvailableBooks(Book[] books, Scanner scanner) {
         System.out.println("Available books:");
-        boolean availableBooksFound = false;
-        for (Book book : books) {
-            if (!book.isCheckedOut()) {
+        boolean availableBooksFound = false; // this is a variable - a boolean that is being assigned to false
+        for (Book book : books) {           //?
+            if (!book.isCheckedOut()) { //if book is not cecked out show in availablbleBooksFound and printBookDetails method runs
                 book.printBookDetails();
                 availableBooksFound = true;
             }
         }
 
-        if (!availableBooksFound) {
+        if (!availableBooksFound) { //? if it is false, print the message below
             System.out.println("No available books at the moment.");
         } else {
             System.out.println("Enter the book ID to check out or 'B' to return to the home screen:");
@@ -76,7 +85,7 @@ public class NeighborhoodLibraryApp {
             if (input.equals("B")) {
                 System.out.println("Returning to the home screen.");
             } else {
-                try {
+                try {   //input validation, not sure how this makes sense?
                     int bookId = Integer.parseInt(input);
                     if (bookId >= 1 && bookId <= books.length && !books[bookId - 1].isCheckedOut()) {
                         checkOutBookById(books, bookId - 1, scanner);
@@ -93,18 +102,18 @@ public class NeighborhoodLibraryApp {
     public static void checkOutBookById(Book[] books, int bookIndex, Scanner scanner) {
         System.out.print("Enter your name: ");
         String personName = scanner.nextLine().trim();
-        books[bookIndex].checkOutBook(personName);
+        books[bookIndex].checkOutBook(personName); //?
     }
 
-    public static void checkOutBook(Book[] books, Scanner scanner) {
-        System.out.print("Enter the book ID to check out: ");
-        int bookId = scanner.nextInt();
-        scanner.nextLine();
+    public static void checkOutBook(Book[] books, Scanner scanner) { //create checkoutbook method and passed the Book array
+        System.out.print("Enter the book ID to check out: ");          //and scanner as parameters; how is this different than passing the
+        int bookIdInput = scanner.nextInt();    // takes bookIdInput as input                         //parameters in the use case section
+        scanner.nextLine();             // clears buffer
 
-        if (bookId >= 1 && bookId <= books.length) {
-            System.out.print("Enter your name: ");
-            String personName = scanner.nextLine().trim();
-            books[bookId - 1].checkOutBook(personName);
+        if (bookIdInput >= 1 && bookIdInput <= books.length) { // dont understand what bookIdInput <= books.length does
+            System.out.print("Enter your name: ");             //does it check if bookIdInput is <= books array length?
+            String personName = scanner.nextLine().trim();          //why does this matter?
+            books[bookIdInput - 1].checkOutBook(personName); //keeps personName associated with the book ID?
         } else {
             System.out.println("Invalid book ID. Please try again.");
         }
@@ -112,10 +121,10 @@ public class NeighborhoodLibraryApp {
 
     public static void checkInBook(Book[] books, Scanner scanner) {
         System.out.print("Enter the book ID to check in: ");
-        int bookId = scanner.nextInt();
+        int bookId = scanner.nextInt();     // accepts bookId as input
         scanner.nextLine();
 
-        if (bookId >= 1 && bookId <= books.length && books[bookId - 1].isCheckedOut()) {
+        if (bookId >= 1 && bookId <= books.length && books[bookId - 1].isCheckedOut()) { // not sure?
             books[bookId - 1].checkInBook();
             System.out.println("Book ID " + bookId + " has been successfully checked in.");
         } else {
@@ -123,7 +132,7 @@ public class NeighborhoodLibraryApp {
         }
     }
 
-    public static void showCheckedOutBooks(Book[] books) {
+    public static void showCheckedOutBooks(Book[] books) { //sees if checkOutBooks is false or true somehow..?
         System.out.println("Checked out books:");
         boolean checkedOutBooksFound = false;
         for (Book book : books) {

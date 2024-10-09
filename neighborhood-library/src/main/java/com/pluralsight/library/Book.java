@@ -1,12 +1,21 @@
 package com.pluralsight.library;
 
+// this class is a blueprint for out Book Objects
 public class Book {
+    //these are our fields they can also be called arguments when used in the contructors
     private String title;
     private String isbn;
     private int id;
     private String checkedOutTo;
     private boolean isCheckedOut;
 
+    //default constructor
+    public Book(){
+
+    }
+
+
+    //this is our 'some args' constructor
     public Book(String title, String isbn, int id) {
         this.title = title;
         this.isbn = isbn;
@@ -14,6 +23,9 @@ public class Book {
         this.isCheckedOut = false;
         this.checkedOutTo = null;
     }
+
+    //methods assign values to book objects depending on what is input on the NeighborhoodLibraryApp class
+    //methods print the information gathered from the main class
 
     public boolean isCheckedOut() {
         return isCheckedOut; // Returns the current status of the book
@@ -41,7 +53,7 @@ public class Book {
     public void returnBook() {
         if (isCheckedOut) {
             System.out.println(checkedOutTo + "returned" + title);
-            this.isCheckedOut = false;
+            this.isCheckedOut = false; //?
             this.checkedOutTo = null;
         } else {
             System.out.println(title + "is not checked out currently");
