@@ -23,5 +23,3 @@ public class fullNameConcatenator {
         return input.nextLine();
     }
 }
-
- System.out.println("Middle Name: "+ nameParts[1]);
