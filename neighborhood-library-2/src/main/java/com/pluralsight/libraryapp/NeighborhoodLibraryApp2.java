@@ -1,20 +1,17 @@
 package com.pluralsight.libraryapp;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class NeighborhoodLibraryApp2 {
 
-  static ArrayList<Book> books = new ArrayList<Book>();
-  static Scanner scanner ;
-  static boolean isRunning;
-  static boolean inViewMode=true;
-  static boolean isAnyBookCheckedOut = false;
+    static ArrayList<Book> books = new ArrayList<Book>();
+    static Scanner scanner;
+    static boolean isRunning;
 
-    public static void main (String[]args){
+    public static void main(String[] args) {
 
-        //here we are populating out arraylist
-        //we use the .add() method and pass in new Book Objects
-
+        // Populate the ArrayList with books
         books.add(new Book("Atomic Habits", "0735211299", 1));
         books.add(new Book("The 7 Habits of Highly Effective People", "1982137274", 2));
         books.add(new Book("How to Win Friends and Influence People", "0671027034", 3));
@@ -37,177 +34,168 @@ public class NeighborhoodLibraryApp2 {
         books.add(new Book("The 5 Love Languages", "080241270X", 20));
 
         scanner = new Scanner(System.in);
-
-
-        //Start the App!!
-        //We need something to let us know if we the app is running or now.
         isRunning = true;
 
-        while(isRunning) {
-
-            System.out.println(""" 
+        while (isRunning) {
+            System.out.println("""
                     Hello, Welcome to the Neighborhood Library!
                     Enter:
                     'C' to check out a book
                     'V' to view available books
                     'I' to check in a book
                     'S' to show checked out books
-                    'X' to exit the application
                     """);
-            // once there are more than 2 options to choose from it is better to use a
-            //switch statement if not there will be too many nested in-else statements
-            //no good!
 
-            //we need the users response
             String input = scanner.nextLine().toUpperCase().trim();
 
-
             switch (input) {
-                case "C":
-                    //if a user selects c or types in C - they want to checkout a book.
-                    // that means we want to call the checkout method we created
-
-                    System.out.println(" Please Enter Your name \n");
-
+                case "C": // Check out a book
+                    System.out.println("Please Enter Your Name: ");
                     String nameInput = scanner.nextLine().trim();
 
-                    displayLibrary(); // here we call the helper method we created that prints
-                    //out all the books in our Arraylist
-                    System.out.println(" Please Select a Book Id: ");
-
-                    int bookIdInput = scanner.nextInt();
-
-                    scanner.nextLine();//clears the buffer or close the scanner.
-
-                    // now we have our values we are ready to check out the book or at least
-
-                    boolean success = checkOut(nameInput, bookIdInput);
-
-                    if (success) {
-                        System.out.println("Awesome!! The book checkout was a success");
-                    } else {
-                        System.out.println("Returning to Main Menu");
-                    }
-
-                    break; // breaking takes us to the main menu
-               
-                    case "S": //Show checked out books
-                    while(inViewMode){
-                        for(Book book : books){ // loop through each book
-                        if(book.isCheckedOut()){//if book IS checked out print the book information
-                            System.out.println(book.getTitle()+ book.getIsbn()+book.getId());
-                            isAnyBookCheckedOut = true;
-                            } 
-                        }
-                        // if no book prints 
-                        if(!isAnyBookCheckedOut)
-                        System.out.println("No books are currently checked out");
-                        System.out.println("Enter 'X' to return to the main menu: ");
-                        String exitInput = scanner.nextLine().toUpperCase().trim();
-                        if (exitInput.equals("X")) {
-                            inViewMode = false;  
-                        }
-                        break;
-                    
-     }
-                    case "I": // to check in a book
-                   while(inViewMode){ System.out.println(" Please Enter Your name \n");
-                    String nameInput2 = scanner.nextLine().trim();
-
-                    System.out.println(" Enter the ID number of the book you want to check in: ");
-                    int bookIdInput2 = scanner.nextInt();
-                    boolean success2 = checkIn(nameInput2, bookIdInput2);
-                    if (success2) {
-                        System.out.println("Awesome!! The book check in was a success");
-                    } 
-                        System.out.println("\n Enter 'X' to return to the main menu ");
-                        String viewInput = scanner.nextLine().toUpperCase().trim();
-                
-                        if (viewInput.equals("X")){
-                         inViewMode = false;
-                }
-                break; 
-                }
-                    case"X":
-                    System.out.println("\n Now exiting the application,Bai Bai!\n");
-                    System.exit(0);
-
-                    case "V":
-
-                    while(inViewMode){
-                    // we want to show books that are not checkout out
+                    boolean availableBooks = false;
                     for (Book book : books) {
                         if (!book.isCheckedOut()) {
-                            System.out.println("Title: " + book.getTitle() +" ISBN: "+ book.getIsbn() + " Book ID: " + book.getId() );
+                            System.out.println("Title: " + book.getTitle() + " ISBN: " + book.getIsbn() + " Book ID: " + book.getId());
+                            availableBooks = true;
                         }
                     }
-                    System.out.println("\n Enter 'X' to return to the main menu ");
-                        String viewInput = scanner.nextLine().toUpperCase().trim();
-                
-                        if (viewInput.equals("X")){
-                         inViewMode = false;
-                }
-                break; 
-                }
+                    if (!availableBooks) {
+                        System.out.println("No available books to check out.");
+                    } else {
+                        System.out.println("Please Select a Book ID: ");
+                        int bookIdInput = scanner.nextInt();
+                        scanner.nextLine(); // Clear buffer
+
+                        boolean success = checkOut(nameInput, bookIdInput);
+
+                        if (success) {
+                            System.out.println("Awesome!! The book checkout was a success.");
+                        }
+                    }
+
+                    // Prompt to return to the main menu
+                    System.out.println("\nEnter 'X' to return to the main menu ");
+                    String viewInput = scanner.nextLine().toUpperCase().trim();
+                    if (viewInput.equals("X")) {
+                        continue; // Go back to the main menu
+                    }
+                    break;
+
+                case "S": // Show checked-out books
+                    boolean anyBooksCheckedOut = false;
+                    for (Book book : books) {
+                        if (book.isCheckedOut()) {
+                            System.out.println("Title: " + book.getTitle() + " ISBN: " + book.getIsbn() + " ID: " + book.getId());
+                            anyBooksCheckedOut = true;
+                        }
+                    }
+                    if (!anyBooksCheckedOut) {
+                        System.out.println("No books are currently checked out.");
+                    }
+
+                    // Prompt to return to the main menu
+                    System.out.println("Enter 'X' to return to the main menu: ");
+                    String exitInput = scanner.nextLine().toUpperCase().trim();
+                    if (exitInput.equals("X")) {
+                        continue; // Go back to the main menu
+                    }
+                    break;
+
+                case "I": // Check in a book
+                    boolean anyBooksCheckedOutForCheckIn = false;
+
+                    // Check if there are any books checked out
+                    for (Book book : books) {
+                        if (book.isCheckedOut()) {
+                            anyBooksCheckedOutForCheckIn = true;
+                            break;
+                        }
+                    }
+
+                    // If no books are checked out, inform the user and exit this case
+                    if (!anyBooksCheckedOutForCheckIn) {
+                        System.out.println("There are no books currently checked out to check in.");
+                    } else {
+                        System.out.println("Please Enter Your Name: ");
+                        String nameInput2 = scanner.nextLine().trim();
+
+                        System.out.println("Enter the ID number of the book you want to check in: ");
+                        int bookIdInput2 = scanner.nextInt();
+                        scanner.nextLine(); // Clear buffer
+
+                        boolean success2 = checkIn(nameInput2, bookIdInput2);
+
+                        if (success2) {
+                            System.out.println("Awesome! The book check-in was a success.");
+                        } else {
+                            System.out.println("Check-in failed. Please ensure you entered the correct name and book ID.");
+                        }
+                    }
+
+                    // Prompt to return to the main menu
+                    System.out.println("\nEnter 'X' to return to the main menu ");
+                    String viewInput2 = scanner.nextLine().toUpperCase().trim();
+                    if (viewInput2.equals("X")) {
+                        continue; // Go back to the main menu
+                    }
+                    break;
+
+                case "V": // View available books
+                    boolean anyAvailableBooks = false;
+                    for (Book book : books) {
+                        if (!book.isCheckedOut()) {
+                            System.out.println("Title: " + book.getTitle() + " ISBN: " + book.getIsbn() + " Book ID: " + book.getId());
+                            anyAvailableBooks = true;
+                        }
+                    }
+                    if (!anyAvailableBooks) {
+                        System.out.println("No available books.");
+                    }
+
+                    // Prompt to return to the main menu
+                    System.out.println("\nEnter 'X' to return to the main menu ");
+                    String viewInput3 = scanner.nextLine().toUpperCase().trim();
+                    if (viewInput3.equals("X")) {
+                        continue; // Go back to the main menu
+                    }
+                    break;
+
+                default:
+                    System.out.println("Invalid input. Please enter a valid option.");
+                    break;
             }
-            //out the switch statement the while loop
-            // while isRunning is true logic can still be excecuted outside the switch
-            // statement but within the while loop
-
         }
-       //outside the while loop
-        //when isRunning is made == to false meaning they exited the program this logic can
-        //still be executed until the end of the main method
-
     }
 
-   static public boolean checkOut(String name, int bookId){
-        // first we can check to make sure that the name is not empty.
-        if(!name.isEmpty() && bookId != 0){
-            //then we want to check to see if the book is available or not
-
-            for(Book book: books){
-
-                if(book.getId() == bookId){
-
-                    if(book.isCheckedOut()){
-                        System.out.println("Sorry " + book.getTitle() + " is unavailable.");
+    static public boolean checkOut(String name, int bookId) {
+        if (!name.isEmpty() && bookId != 0) {
+            for (Book book : books) {
+                if (book.getId() == bookId) {
+                    if (book.isCheckedOut()) {
+                        System.out.println("Sorry, " + book.getTitle() + " is unavailable.");
+                        return false;
                     } else {
-                        //if the book is available, we want to update the 'checkedOutTo' field
-                       // this.checkedOutTo = name;
                         book.setCheckedOutTo(name);
-                       // this.isCheckedOut = true;
                         book.setCheckedOut(true);
-                        // we also want to change the isCheckedOut field to true;
                         return true;
                     }
                 }
             }
-
         }
-
         return false;
-
     }
 
     public static boolean checkIn(String name, int bookId) {
-        if(!name.isEmpty() && bookId != 0){
-            //then we want to check in the book
+        if (!name.isEmpty() && bookId != 0) {
             for (Book book : books) {
                 if (book.getId() == bookId && book.isCheckedOut() && book.getCheckedOutTo().equals(name)) {
-                        book.setCheckedOutTo(null);
-                       // this.isCheckedOut = true;
-                        book.setCheckedOut(false);
-                        // we also want to change the isCheckedOut field to false; 
-                    }
+                    book.setCheckedOutTo(null);
+                    book.setCheckedOut(false);
+                    return true;
                 }
             }
-            return true;
-    }
-
-    static void displayLibrary(){
-        for(Book book: books){
-            System.out.println(book);
         }
+        return false;
     }
 }
