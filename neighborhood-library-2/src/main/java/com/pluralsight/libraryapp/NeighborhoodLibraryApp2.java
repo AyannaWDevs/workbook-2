@@ -52,7 +52,7 @@ public class NeighborhoodLibraryApp2 {
                     'V' to view available books
                     'I' to check in a book
                     'S' to show checked out books
-                    'X' to exit
+                    'X' to exit the application
                     """);
             // once there are more than 2 options to choose from it is better to use a
             //switch statement if not there will be too many nested in-else statements
@@ -94,28 +94,30 @@ public class NeighborhoodLibraryApp2 {
                     case "S": //Show checked out books
                     while(inViewMode){
                         for(Book book : books){ // loop through each book
-                        if(book.isCheckedOut()){
+                        if(book.isCheckedOut()){//if book IS checked out print the book information
                             System.out.println(book.getTitle()+ book.getIsbn()+book.getId());
                             isAnyBookCheckedOut = true;
-                            }}
-                            if(!isAnyBookCheckedOut)
-                            System.out.println("No books are currently checked out");
-                            break;
+                            } 
                         }
+                        // if no book prints 
+                        if(!isAnyBookCheckedOut)
+                        System.out.println("No books are currently checked out");
                         System.out.println("Enter 'X' to return to the main menu: ");
                         String exitInput = scanner.nextLine().toUpperCase().trim();
                         if (exitInput.equals("X")) {
                             inViewMode = false;  
+                        }
+                        break;
+                    
      }
                     case "I": // to check in a book
                    while(inViewMode){ System.out.println(" Please Enter Your name \n");
-                    String nameInput = scanner.nextLine().trim();
+                    String nameInput2 = scanner.nextLine().trim();
 
                     System.out.println(" Enter the ID number of the book you want to check in: ");
-                    int bookIdInput = scanner.nextInt();
-                    boolean success = checkIn(nameInput, bookIdInput);
-
-                    if (success) {
+                    int bookIdInput2 = scanner.nextInt();
+                    boolean success2 = checkIn(nameInput2, bookIdInput2);
+                    if (success2) {
                         System.out.println("Awesome!! The book check in was a success");
                     } 
                         System.out.println("\n Enter 'X' to return to the main menu ");
@@ -126,6 +128,9 @@ public class NeighborhoodLibraryApp2 {
                 }
                 break; 
                 }
+                    case"X":
+                    System.out.println("\n Now exiting the application,Bai Bai!\n");
+                    System.exit(0);
 
                     case "V":
 
@@ -185,16 +190,19 @@ public class NeighborhoodLibraryApp2 {
 
     }
 
-    public boolean checkIn(String name, int bookId) {
+    public static boolean checkIn(String name, int bookId) {
         if(!name.isEmpty() && bookId != 0){
             //then we want to check in the book
+            for (Book book : books) {
+                if (book.getId() == bookId && book.isCheckedOut() && book.getCheckedOutTo().equals(name)) {
                         book.setCheckedOutTo(null);
                        // this.isCheckedOut = true;
                         book.setCheckedOut(false);
-                        // we also want to change the isCheckedOut field to true;
-                        return false;
+                        // we also want to change the isCheckedOut field to false; 
                     }
-       
+                }
+            }
+            return true;
     }
 
     static void displayLibrary(){
