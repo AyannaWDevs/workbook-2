@@ -22,7 +22,8 @@ public class Book {
         this.checkedOutTo = null; // Default - book is not checked out to anyone
         this.isCheckedOut = false ;// the default value of a book should be that it not checked out
     }
-
+//Getters and Setters of field attributes
+    //gets the attribute, sets and returns the desired value
     public String getTitle() {
         return title;
     }
